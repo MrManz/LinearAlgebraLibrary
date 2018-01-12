@@ -1,3 +1,5 @@
+import math
+
 class Vector(object):
     def __init__(self, coordinates):
         try:
@@ -43,16 +45,18 @@ class Vector(object):
             values.append(self.coordinates[i] * scalar)
         return Vector(values)
 
+    def getMagnitude(self):
+        value = 0
+        for i in range(0, self.dimension):
+            value += self.coordinates[i] ** 2
+        return math.sqrt(value)
 
-v1 = Vector([8.218 , -9.341])
-v2 = Vector([-1.129 , 2.111])
+    def normalize(self):
+        return self.multiplyScalar(1 / self.getMagnitude())
 
-print(v1.addition(v2))
+v1 = Vector([-0.221 , 7.437])
+v2 = Vector([8.813 , -1.331, -6.247])
+v3 = Vector([5.581 , -2.136])
+v4 = Vector([1.996 , 3.108, -4.554])
 
-v3 = Vector([7.119 , 8.215])
-v4 = Vector([-8.223 , 0.878])
-
-print(v3.substraction(v4))
-
-v5 = Vector([1.671 , -1.012, -0.318])
-print(v5.multiplyScalar(7.41))
+print(v4.normalize())
