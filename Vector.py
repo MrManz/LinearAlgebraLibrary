@@ -54,9 +54,25 @@ class Vector(object):
     def normalize(self):
         return self.multiplyScalar(1 / self.getMagnitude())
 
-v1 = Vector([-0.221 , 7.437])
-v2 = Vector([8.813 , -1.331, -6.247])
-v3 = Vector([5.581 , -2.136])
-v4 = Vector([1.996 , 3.108, -4.554])
+    def dotProduct(self, v):
+        value = 0
+        for i in range(0, self.dimension):
+            value += self.coordinates[i] * v.coordinates[i]
+        return value
 
-print(v4.normalize())
+    def angle(self, v):
+        return math.acos(self.dotProduct(v) / (self.getMagnitude() * v.getMagnitude()))
+
+v1 = Vector([7.887 , 4.138])
+v2 = Vector([-8.802 , 6.776])
+
+v3 = Vector([-5.955 , -4.904, -1.874])
+v4 = Vector([-4.496, -8.755, 7.103])
+
+v5 = Vector([3.183 , -7.627])
+v6 = Vector([-2.668, 5.319])
+
+v7 = Vector([7.35 , 0.221, 5.188])
+v8 = Vector([2.751, 8.259, 3.985])
+
+print(math.degrees(v7.angle((v8))))
