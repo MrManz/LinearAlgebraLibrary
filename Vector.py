@@ -1,11 +1,14 @@
 import math
+from decimal import Decimal, getcontext
+
+getcontext().pred = 30
 
 class Vector(object):
     def __init__(self, coordinates):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(coordinates)
+            self.coordinates = tuple(Decimal(coordinates))
             self.dimension = len(coordinates)
 
         except ValueError:
@@ -42,7 +45,7 @@ class Vector(object):
     def multiplyScalar(self, scalar):
         values = []
         for i in range(0, self.dimension):
-            values.append(self.coordinates[i] * scalar)
+            values.append(self.coordinates[i] * Decimal(scalar))
         return Vector(values)
 
     def getMagnitude(self):
@@ -52,7 +55,7 @@ class Vector(object):
         return math.sqrt(value)
 
     def normalize(self):
-        return self.multiplyScalar(1 / self.getMagnitude())
+        return self.multiplyScalar(Decimal(1.0) / self.getMagnitude())
 
     def dotProduct(self, v):
         value = 0
