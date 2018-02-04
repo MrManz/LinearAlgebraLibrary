@@ -8,7 +8,7 @@ class Vector(object):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(Decimal(coordinates))
+            self.coordinates = tuple(Decimal(x) for x in coordinates)
             self.dimension = len(coordinates)
 
         except ValueError:
@@ -52,13 +52,13 @@ class Vector(object):
         value = 0
         for i in range(0, self.dimension):
             value += self.coordinates[i] ** 2
-        return math.sqrt(value)
+        return Decimal(math.sqrt(value))
 
     def normalize(self):
         return self.multiplyScalar(Decimal(1.0) / self.getMagnitude())
 
     def dotProduct(self, v):
-        value = 0
+        value = Decimal(0.0)
         for i in range(0, self.dimension):
             value += self.coordinates[i] * v.coordinates[i]
         return value
@@ -66,16 +66,27 @@ class Vector(object):
     def angle(self, v):
         return math.acos(self.dotProduct(v) / (self.getMagnitude() * v.getMagnitude()))
 
-v1 = Vector([7.887 , 4.138])
-v2 = Vector([-8.802 , 6.776])
+    def checkIfParallel(self, v):
+        return(self.isZero() or v.isZero()
+                or self.angle(v) == 0
+                or self.angle(v) == math.pi )
 
-v3 = Vector([-5.955 , -4.904, -1.874])
-v4 = Vector([-4.496, -8.755, 7.103])
+    def checkIfOrt(self, v):
+        tolerance = 1e-10
+        if abs(self.dotProduct(v)) < tolerance:
+            return True
+        else:
+            return False
 
-v5 = Vector([3.183 , -7.627])
-v6 = Vector([-2.668, 5.319])
+    def isZero(self):
+        return self.getMagnitude() < 1e-10
 
-v7 = Vector([7.35 , 0.221, 5.188])
-v8 = Vector([2.751, 8.259, 3.985])
+    def getProjection(self, v):
+        unitVector = v.normalize()
+        return (unitVector.multiplyScalar(self.dotProduct(unitVector)))
 
-print(math.degrees(v7.angle((v8))))
+
+v1 = Vector([3.039 , 1.879])
+v2 = Vector([ 0.825 , 2.036])
+
+print(v1.getProjection(v2))
